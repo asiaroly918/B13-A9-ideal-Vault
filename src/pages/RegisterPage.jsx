@@ -5,13 +5,6 @@ import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
-interface PasswordStrength {
-  hasLength: boolean;
-  hasUpper: boolean;
-  hasLower: boolean;
-  hasNumber: boolean;
-}
-
 export default function RegisterPage() {
   const { register, loginWithGoogle, user } = useAuth();
   const navigate = useNavigate();
@@ -33,7 +26,7 @@ export default function RegisterPage() {
     if (user) navigate("/");
   }, [user, navigate]);
 
-  const checkStrength = (pwd: string) => {
+  const checkStrength = (pwd) => {
     setStrength({
       hasLength: pwd.length >= 6,
       hasUpper: /[A-Z]/.test(pwd),
@@ -42,13 +35,13 @@ export default function RegisterPage() {
     });
   };
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     setFormError("");
     if (field === "password") checkStrength(value);
   };
 
-  const validateForm = (): boolean => {
+  const validateForm = () => {
     if (!form.name.trim()) { setFormError("Full name is required"); return false; }
     if (form.name.trim().length < 2) { setFormError("Name must be at least 2 characters"); return false; }
     if (!form.email.trim()) { setFormError("Email is required"); return false; }
@@ -61,7 +54,7 @@ export default function RegisterPage() {
     return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
     if (!validateForm()) return;
@@ -71,7 +64,7 @@ export default function RegisterPage() {
       await register(form.name, form.email, form.photoURL, form.password);
       toast.success("Account created successfully! Welcome to IdeaVault 🎉");
       navigate("/");
-    } catch (err: any) {
+    } catch (err) {
       const msg = err.message || "Registration failed. Please try again.";
       setFormError(msg);
       toast.error(msg);
@@ -200,9 +193,12 @@ export default function RegisterPage() {
                       src={form.photoURL}
                       alt="Preview"
                       className="w-8 h-8 rounded-full object-cover border-2 border-violet-300"
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                    />
-                    <span className="text-xs text-base-content/50">Preview</span>
+                      onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.style.display = "none";
+                  }}
+                  />
+                      <span className="text-xs text-base-content/50">Preview</span>
                   </div>
                 )}
               </div>
@@ -249,8 +245,8 @@ export default function RegisterPage() {
                     </div>
                     <div className="grid grid-cols-2 gap-1.5">
                       {strengthItems.map(({ key, label }) => (
-                        <div key={key} className={`flex items-center gap-1.5 text-xs ${strength[key as keyof PasswordStrength] ? "text-success" : "text-base-content/40"}`}>
-                          <FiCheckCircle className={strength[key as keyof PasswordStrength] ? "fill-current" : ""} />
+                        <div key={key} className={`flex items-center gap-1.5 text-xs ${strength[key] ? "text-success" : "text-base-content/40"}`}>
+                          <FiCheckCircle className={strength[key] ? "fill-current" : ""} />
                           {label}
                         </div>
                       ))}

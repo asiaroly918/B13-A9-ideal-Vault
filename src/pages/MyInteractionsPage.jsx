@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import { mockIdeas, CATEGORY_COLORS, CATEGORY_ICONS } from "../data/mockData";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-type Tab = "comments" | "bookmarks" | "upvoted";
+type = "comments" | "bookmarks" | "upvoted";
 
 export default function MyInteractionsPage() {
   const { user } = useAuth();

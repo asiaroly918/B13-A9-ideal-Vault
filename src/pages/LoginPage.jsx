@@ -9,7 +9,7 @@ export default function LoginPage() {
   const { login, loginWithGoogle, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as any)?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +22,7 @@ export default function LoginPage() {
     if (user) navigate(from, { replace: true });
   }, [user, navigate, from]);
 
-  const validateForm = (): boolean => {
+  const validateForm = () => {
     if (!email.trim()) {
       setFormError("Email is required");
       return false;
@@ -38,7 +38,7 @@ export default function LoginPage() {
     return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
     if (!validateForm()) return;
@@ -48,7 +48,7 @@ export default function LoginPage() {
       await login(email, password);
       toast.success("Welcome back! 🎉");
       navigate(from, { replace: true });
-    } catch (err: any) {
+    } catch (err) {
       const msg = err.message || "Login failed. Please check your credentials.";
       setFormError(msg);
       toast.error(msg);
@@ -63,7 +63,7 @@ export default function LoginPage() {
       await loginWithGoogle();
       toast.success("Logged in with Google! 🎉");
       navigate(from, { replace: true });
-    } catch (err: any) {
+    } catch (err) {
       toast.error("Google login failed. Please try again.");
     } finally {
       setIsLoading(false);
