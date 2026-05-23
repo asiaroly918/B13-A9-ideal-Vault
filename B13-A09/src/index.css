@@ -1,0 +1,73 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light, dark;
+}
+
+@layer base {
+  :root {
+    --color-primary: oklch(0.56 0.2 262);
+    --color-secondary: oklch(0.65 0.22 330);
+    --color-accent: oklch(0.72 0.18 160);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.56 0.2 262 / 0.4);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.56 0.2 262 / 0.7);
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Swiper custom styles */
+.swiper-pagination-bullet-active {
+  background: oklch(0.56 0.2 262) !important;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, oklch(0.56 0.2 262), oklch(0.65 0.22 330));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover effect */
+.idea-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.idea-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Hero overlay */
+.hero-overlay {
+  background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(30,0,60,0.65) 100%);
+}
+
+/* Animated badge pulse */
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 1; }
+  70% { transform: scale(1.1); opacity: 0; }
+  100% { transform: scale(0.95); opacity: 0; }
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
